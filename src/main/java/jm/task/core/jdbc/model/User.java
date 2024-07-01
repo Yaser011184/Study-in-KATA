@@ -10,16 +10,26 @@ public class User {
     private Long id;
 
     @Column
-    private String name;
+    private static String name;
 
     @Column
-    private String lastName;
+    private static String lastName;
 
     @Column
-    private Byte age;
+    private static Byte age;
 
     public User() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                '}';
     }
 
     public User(String name, String lastName, Byte age) {
@@ -36,7 +46,7 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 
@@ -44,15 +54,16 @@ public class User {
         this.name = name;
     }
 
-    public String getLastName() {
+    public static String getLastName() {
         return lastName;
     }
+
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public Byte getAge() {
+    public static Byte getAge() {
         return age;
     }
 
