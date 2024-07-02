@@ -17,7 +17,6 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
-
         String sqlCommand = """
                 CREATE TABLE IF NOT EXISTS Users
                 (id SERIAL PRIMARY KEY,
@@ -46,13 +45,10 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
-
+    public void saveUser(String name, String lastName, byte age) {
         String sql = " INSERT INTO Users (NAME, LASTNAME, AGE) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            //preparedStatement = connection.prepareStatement(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
@@ -63,8 +59,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-
-    public List<User> removeUserById(long id) throws SQLException {
+    public List<User> removeUserById(long id) {
 
         String sql = "DELETE FROM Users WHERE ID=?";
 
@@ -80,7 +75,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return userList;
     }
 
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers(){
         List<User> userList = new ArrayList<>();
 
         String sql = "SELECT * FROM Users";
@@ -104,7 +99,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
 
-    public void cleanUsersTable() throws SQLException {
+    public void cleanUsersTable(){
 
         String sql = "DELETE FROM Users ";
 
