@@ -48,3 +48,7 @@ VS Code
 Mac OS
 .DS_Store
 /.idea/
+.classpath
+.project
+.settings/
+target/
