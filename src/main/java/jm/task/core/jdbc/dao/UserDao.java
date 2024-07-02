@@ -8,14 +8,9 @@ import java.util.List;
 
 public interface UserDao {
     void createUsersTable();
-
     void dropUsersTable();
-
-    void saveUser(String name, String lastName, byte age) throws SQLException;
-
-    List<User> removeUserById(long id) throws SQLException;
-
-    List<User> getAllUsers() throws SQLException;
-
-    void cleanUsersTable() throws SQLException;
+    void saveUser(String name, String lastName, byte age);
+    List<User> removeUserById(long id);
+    List<User> getAllUsers();
+    void cleanUsersTable();
 }
