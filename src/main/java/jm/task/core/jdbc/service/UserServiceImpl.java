@@ -11,33 +11,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+    UserDaoJDBCImpl userDao = new UserDaoJDBCImpl();
 
-    UserDaoJDBCImpl userDao  = new UserDaoJDBCImpl();
-
-    public void createUsersTable() throws SQLException {
+    public void createUsersTable() {
         userDao.createUsersTable();
+        System.out.println("Таблица создана.");
     }
 
-    public void dropUsersTable() throws SQLException {
+    public void dropUsersTable() {
         userDao.dropUsersTable();
+        System.out.println("Таблица удалена.");
     }
 
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
+    public void saveUser(String name, String lastName, byte age) {
         userDao.saveUser(name, lastName, age);
         System.out.println("User с именем " + name + " добавлен в базу данных.");
     }
 
-    public void removeUserById(long id) throws SQLException {
-
+    public void removeUserById(long id) {
         userDao.removeUserById(id);
+        System.out.println("Удален User c id " + id);
     }
 
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() {
+    System.out.println("Возвращены все Users");
        return userDao.getAllUsers();
-    }
-
-
-    public void cleanUsersTable() throws SQLException {
+}
+    public void cleanUsersTable() {
         userDao.cleanUsersTable();
+        System.out.println("Таблица Users очищена.");
     }
 }

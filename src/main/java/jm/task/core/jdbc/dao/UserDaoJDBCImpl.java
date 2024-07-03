@@ -4,7 +4,6 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 """;
         try {
             Statement statement = connection.createStatement();
-            // создание таблицы
+
             statement.executeUpdate(sqlCommand);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -34,12 +33,11 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        String sqlCommand = "DROP TABLE IF EXISTS lUsers";
 
         try {
             Statement statement = connection.createStatement();
-            // создание таблицы
-            statement.executeUpdate(sqlCommand);
+
+            statement.executeUpdate("DROP TABLE IF EXISTS Users");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -48,41 +46,55 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         String sql = " INSERT INTO Users (NAME, LASTNAME, AGE) VALUES (?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
 
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (Exception e) {
+            System.err.println("User not added");
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
     public List<User> removeUserById(long id) {
-
-        String sql = "DELETE FROM Users WHERE ID=?";
-
         List<User> userList = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE ID=?");
             preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return userList;
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (Exception e) {
+            System.err.println("User not added");
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        } return userList;
     }
 
     public List<User> getAllUsers(){
         List<User> userList = new ArrayList<>();
 
-        String sql = "SELECT * FROM Users";
-
         try (Statement statement = connection.createStatement()) {
 
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Users");
 
             while (resultSet.next()) {
                 User user = new User();
@@ -98,17 +110,23 @@ public class UserDaoJDBCImpl implements UserDao {
         return userList;
     }
 
-
     public void cleanUsersTable(){
 
-        String sql = "DELETE FROM Users ";
-
-        User user = new User();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try {
+        connection.setAutoCommit(false);
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Users ");
 
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (Exception e) {
+            System.err.println("User not added");
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 }
