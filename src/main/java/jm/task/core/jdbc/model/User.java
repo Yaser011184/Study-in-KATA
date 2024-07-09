@@ -46,7 +46,7 @@ public class User {
         this.id = id;
     }
 
-    public static String getName() {
+    public  String getName() {
         return name;
     }
 
@@ -54,7 +54,7 @@ public class User {
         this.name = name;
     }
 
-    public static String getLastName() {
+    public  String getLastName() {
         return lastName;
     }
 
