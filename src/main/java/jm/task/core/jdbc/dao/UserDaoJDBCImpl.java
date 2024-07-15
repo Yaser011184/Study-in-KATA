@@ -114,7 +114,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
         try {
         connection.setAutoCommit(false);
-        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Users ");
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Users");
 
             preparedStatement.executeUpdate();
             connection.commit();
